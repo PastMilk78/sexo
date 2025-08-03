@@ -812,6 +812,286 @@ To learn more about this, check out our article &ldquo;<span style="text-decorat
 
 
 
+<!-- Chat de IA - Facultad de Biología UAQ -->
+<style>
+/* Chat Bot Styles */
+#ai-chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    display: none;
+    flex-direction: column;
+    z-index: 100000;
+    font-family: Arial, sans-serif;
+}
+
+#ai-chatbot-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 100001;
+}
+
+#ai-chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+}
+
+#ai-chatbot-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#ai-chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.ai-message {
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 85%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.ai-user-message {
+    background: #667eea;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.ai-bot-message {
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 5px;
+}
+
+.ai-typing-indicator {
+    display: none;
+    padding: 10px 15px;
+    font-style: italic;
+    color: #666;
+    font-size: 12px;
+}
+
+.ai-typing-dots {
+    animation: ai-typing 1.4s infinite;
+}
+
+@keyframes ai-typing {
+    0%, 60% { opacity: 0; }
+    30% { opacity: 1; }
+}
+
+#ai-chatbot-input-container {
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+    background: white;
+    border-radius: 0 0 15px 15px;
+}
+
+#ai-chatbot-input {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px 15px;
+    outline: none;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#ai-chatbot-input:focus {
+    border-color: #667eea;
+}
+</style>
+
+<!-- Chat Bot HTML -->
+<button id="ai-chatbot-toggle">💬</button>
+<div id="ai-chatbot-container">
+    <div id="ai-chatbot-header">
+        <h4 style="margin: 0; font-size: 16px;">Asistente Virtual - Facultad de Biología UAQ</h4>
+        <button id="ai-chatbot-close" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">×</button>
+    </div>
+    <div id="ai-chatbot-messages">
+        <div class="ai-message ai-bot-message">
+            ¡Hola! Soy tu asistente virtual de la Facultad de Biología UAQ. Puedo ayudarte con información sobre los programas académicos, años de estudio, admisiones y más. ¿En qué puedo ayudarte?
+        </div>
+    </div>
+    <div class="ai-typing-indicator">
+        <span class="ai-typing-dots">Escribiendo</span>
+    </div>
+    <div id="ai-chatbot-input-container">
+        <input type="text" id="ai-chatbot-input" placeholder="Escribe tu pregunta aquí..." maxlength="500">
+    </div>
+</div>
+
+<script>
+// Chat Bot Functionality para Facultad de Biología UAQ
+(function() {
+    const chatToggle = document.getElementById('ai-chatbot-toggle');
+    const chatContainer = document.getElementById('ai-chatbot-container');
+    const chatClose = document.getElementById('ai-chatbot-close');
+    const chatMessages = document.getElementById('ai-chatbot-messages');
+    const chatInput = document.getElementById('ai-chatbot-input');
+    const typingIndicator = document.querySelector('.ai-typing-indicator');
+
+    // Knowledge base específica de la Facultad de Biología UAQ
+    const knowledgeBase = {
+        "programas académicos": "La Facultad de Biología UAQ ofrece la Licenciatura en Biología con orientaciones en Ecología, Biología Molecular y Biotecnología. También cuenta con programas de posgrado reconocidos por CONACYT.",
+        
+        "primer año": "El primer año incluye materias básicas como: Matemáticas, Química General, Biología General, Física, Estadística y Metodología Científica. Es el año de fundamentación científica.",
+        
+        "segundo año": "En segundo año se estudian: Química Orgánica, Bioquímica, Genética, Biología Celular, Anatomía Comparada y Fisiología. Se profundiza en los procesos biológicos fundamentales.",
+        
+        "tercer año": "Tercer año incluye: Microbiología, Ecología, Evolución, Biología Molecular, Inmunología y Botánica. Se introduce la especialización en áreas específicas.",
+        
+        "cuarto año": "En cuarto año: Biotecnología, Bioinformática, Conservación, Toxicología, Parasitología y materias optativas según la orientación elegida (Ecología, Biología Molecular o Biotecnología).",
+        
+        "quinto año": "El quinto año se enfoca en: Seminario de Tesis, Servicio Social, Prácticas Profesionales, materias de especialización avanzada y desarrollo del proyecto de titulación.",
+        
+        "prólogo": "La Facultad de Biología UAQ fue fundada con el objetivo de formar profesionales en ciencias biológicas comprometidos con la investigación, conservación y el desarrollo sustentable. Nuestra misión es generar conocimiento científico de calidad.",
+        
+        "investigación": "Desarrollamos investigación en Ecología, Biología Molecular, Microbiología, Botánica, Zoología y Biotecnología con financiamiento nacional e internacional.",
+        
+        "instalaciones": "Contamos con laboratorios especializados, herbario, biblioteca, invernaderos, equipo de vanguardia y áreas de campo para prácticas.",
+        
+        "admisiones": "Proceso: registro en línea, examen de admisión (matemáticas, español, biología, química, física), curso propedéutico, entrevista. Requisitos: certificado con promedio 7.0+. Convocatorias en febrero y agosto.",
+        
+        "ubicación": "Campus Juriquilla, UAQ. Av. de las Ciencias S/N, Juriquilla, Querétaro.",
+        
+        "contacto": "Tel: (442) 192-1200 ext. 5300. Email: biologia@uaq.mx. Horarios: L-V 8:00-16:00 hrs.",
+        
+        "orientaciones": "Ofrecemos tres orientaciones: 1) Ecología - enfocada en conservación y medio ambiente, 2) Biología Molecular - investigación genética y molecular, 3) Biotecnología - aplicaciones industriales y médicas.",
+        
+        "titulación": "Opciones de titulación: tesis, examen general de conocimientos, estudios de posgrado, servicio social investigativo, y seminario de actualización.",
+        
+        "servicios": "Biblioteca especializada, laboratorios de cómputo, centro de idiomas, servicios médicos, becas académicas y de manutención, intercambios académicos."
+    };
+
+    let isOpen = false;
+
+    if (chatToggle) chatToggle.addEventListener('click', toggleChat);
+    if (chatClose) chatClose.addEventListener('click', closeChat);
+    if (chatInput) chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    function toggleChat() {
+        isOpen ? closeChat() : openChat();
+    }
+
+    function openChat() {
+        if (chatContainer) chatContainer.style.display = 'flex';
+        if (chatToggle) chatToggle.textContent = '×';
+        if (chatInput) chatInput.focus();
+        isOpen = true;
+    }
+
+    function closeChat() {
+        if (chatContainer) chatContainer.style.display = 'none';
+        if (chatToggle) chatToggle.textContent = '💬';
+        isOpen = false;
+    }
+
+    function sendMessage() {
+        if (!chatInput) return;
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, 'user');
+        chatInput.value = '';
+
+        if (typingIndicator) typingIndicator.style.display = 'block';
+        if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+            if (typingIndicator) typingIndicator.style.display = 'none';
+            const response = generateResponse(message);
+            addMessage(response, 'bot');
+        }, 1000 + Math.random() * 2000);
+    }
+
+    function addMessage(text, sender) {
+        if (!chatMessages) return;
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ai-${sender}-message`;
+        messageDiv.textContent = text;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function generateResponse(userMessage) {
+        const message = userMessage.toLowerCase();
+
+        if (message.includes('hola') || message.includes('buenos')) {
+            return '¡Hola! Bienvenido a la Facultad de Biología UAQ. ¿En qué puedo ayudarte? Puedo contarte sobre los años de estudio, programas, admisiones o cualquier otra información.';
+        }
+
+        if (message.includes('gracias')) {
+            return '¡De nada! ¿Hay algo más que te gustaría saber sobre la Facultad de Biología UAQ?';
+        }
+
+        // Búsqueda específica por años
+        if (message.includes('1') || message.includes('primero') || message.includes('primer')) {
+            return knowledgeBase["primer año"];
+        }
+        if (message.includes('2') || message.includes('segundo')) {
+            return knowledgeBase["segundo año"];
+        }
+        if (message.includes('3') || message.includes('tercero') || message.includes('tercer')) {
+            return knowledgeBase["tercer año"];
+        }
+        if (message.includes('4') || message.includes('cuarto')) {
+            return knowledgeBase["cuarto año"];
+        }
+        if (message.includes('5') || message.includes('quinto')) {
+            return knowledgeBase["quinto año"];
+        }
+
+        // Búsqueda en la base de conocimientos
+        for (const [key, value] of Object.entries(knowledgeBase)) {
+            if (message.includes(key) ||
+                (key.includes('programas') && (message.includes('carrera') || message.includes('estudiar'))) ||
+                (key.includes('admisiones') && (message.includes('ingreso') || message.includes('requisitos'))) ||
+                (key.includes('ubicación') && (message.includes('donde') || message.includes('direccion'))) ||
+                (key.includes('contacto') && (message.includes('telefono') || message.includes('email'))) ||
+                (key.includes('orientaciones') && (message.includes('especialidad') || message.includes('área'))) ||
+                (key.includes('prólogo') && (message.includes('historia') || message.includes('fundación')))) {
+                return value;
+            }
+        }
+
+        return 'Te puedo ayudar con información sobre: años de estudio (1° a 5°), programas académicos, admisiones, orientaciones, investigación, instalaciones, prólogo de la facultad y contacto. ¿Sobre qué te gustaría saber más?';
+    }
+})();
+</script>
 
 </body>
 
