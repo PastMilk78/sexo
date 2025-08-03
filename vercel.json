@@ -7,14 +7,10 @@
       "use": "@vercel/static"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/",
-      "dest": "/umdesignermx.wixstudio.com/facultadbiologiauaq.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/",
+      "destination": "/umdesignermx.wixstudio.com/facultadbiologiauaq.html"
     }
   ],
   "headers": [
@@ -28,7 +24,7 @@
       ]
     },
     {
-      "source": "/**/*.html",
+      "source": "/(.*)\\.html",
       "headers": [
         {
           "key": "Cache-Control",
