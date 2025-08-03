@@ -1,0 +1,6 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+umdesignermx.wixstudio.com	TRUE	/	FALSE	1999999999	XSRF-TOKEN	1754248003|YBvG2oBh2YqN
+umdesignermx.wixstudio.com	TRUE	/	FALSE	1999999999	SameSite	None
+umdesignermx.wixstudio.com	TRUE	/	FALSE	1999999999	ssr-caching	cache#desc=hit#varnish=hit#dc#desc=virginia-pub_g
+
