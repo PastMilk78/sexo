@@ -8,8 +8,7 @@
     <meta name="description" content="Sitio web de la Facultad de Biología de la Universidad Autónoma de Querétaro">
     <meta name="keywords" content="biología, UAQ, universidad, querétaro, facultad">
     
-    <!-- Redirección automática -->
-    <meta http-equiv="refresh" content="0; url=./umdesignermx.wixstudio.com/facultadbiologiauaq.html">
+    <!-- Meta tags para SEO -->
     
     <style>
         body {
@@ -62,25 +61,83 @@
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
+        
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        #entriesIndex {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        #entriesIndex ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #entriesIndex li {
+            margin: 10px 0;
+        }
+        
+        #entriesIndex a {
+            display: block;
+            padding: 8px 16px;
+            margin: 5px 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="loading"></div>
+
         <h1>Facultad de Biología UAQ</h1>
-        <p>Redirigiendo al sitio web...</p>
-        <p>Si no eres redirigido automáticamente, 
-           <a href="./umdesignermx.wixstudio.com/facultadbiologiauaq.html">haz clic aquí</a>
-        </p>
+        <p>Bienvenido al sitio web oficial</p>
+        <button id="toggleIndex" onclick="toggleEntries()">Ver Índice de Contenidos</button>
+        <div id="entriesIndex" style="display: none; margin-top: 20px; text-align: left;">
+            <h3>Índice de Contenidos:</h3>
+            <ul>
+                <li><a href="#introduccion">Introducción a la Biología</a></li>
+                <li><a href="#programas">Programas Académicos</a></li>
+                <li><a href="#investigacion">Investigación</a></li>
+                <li><a href="#laboratorios">Laboratorios</a></li>
+                <li><a href="#profesores">Cuerpo Docente</a></li>
+                <li><a href="#admisiones">Proceso de Admisión</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
     </div>
     
     <script>
-        // Redirección con JavaScript como respaldo
-        setTimeout(function() {
-            window.location.href = './umdesignermx.wixstudio.com/facultadbiologiauaq.html';
-        }, 1000);
+        function toggleEntries() {
+            const index = document.getElementById('entriesIndex');
+            const button = document.getElementById('toggleIndex');
+            
+            if (index.style.display === 'none') {
+                index.style.display = 'block';
+                button.textContent = 'Ocultar Índice';
+            } else {
+                index.style.display = 'none';
+                button.textContent = 'Ver Índice de Contenidos';
+            }
+        }
     </script>
 </body>
 </html>
-
-
