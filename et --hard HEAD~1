@@ -1,0 +1,5 @@
+[33m150ad4a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Fix: Corregir URLs relativas a absolutas para recursos externos de Wix
+[33m8ab9097[m Eliminar referencias a Wix y agregar botón funcional del índice
+[33mef87d91[m feat: Implementación completa del chatbot mejorado y correcciones globales
+[33m77ecbc0[m feat: Eliminación global de branding Wix y integración completa del chatbot de IA
+[33m05378ea[m Fix: Corregir rutas del botón 'Índice' en todas las páginas para navegación correcta
