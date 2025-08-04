@@ -11,6 +11,10 @@
     {
       "source": "/",
       "destination": "/umdesignermx.wixstudio.com/facultadbiologiauaq.html"
+    },
+    {
+      "source": "/facultadbiologiauaq/(.*)",
+      "destination": "/umdesignermx.wixstudio.com/facultadbiologiauaq/$1"
     }
   ],
   "headers": [
