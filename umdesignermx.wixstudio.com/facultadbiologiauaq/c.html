@@ -94,6 +94,42 @@ function initHamburgerMenu() {
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
             
+            // ✅ NUEVA FUNCIONALIDAD: Mostrar el contenido del menú expandible
+            const menuContent = document.querySelector('#comp-mdmuyz3u3, [id*="comp-m"][id*="u3"], .ExpandableMenu, [class*="ExpandableMenu"]');
+            if (menuContent) {
+                menuContent.style.display = 'block';
+                menuContent.style.visibility = 'visible';
+                menuContent.style.opacity = '1';
+                console.log('✅ Contenido del menú mostrado');
+            } else {
+                console.log('⚠️ No se encontró el contenido del menú expandible');
+            }
+            
+            // Buscar y mostrar cualquier menú vertical oculto
+            const verticalMenus = document.querySelectorAll('[class*="vertical-menu"], [class*="wixui-vertical-menu"], [data-testid*="menu"]');
+            verticalMenus.forEach(menu => {
+                if (menu.style.display === 'none' || menu.style.visibility === 'hidden') {
+                    menu.style.display = 'block';
+                    menu.style.visibility = 'visible';
+                    menu.style.opacity = '1';
+                    console.log('✅ Menú vertical mostrado:', menu.id || menu.className);
+                }
+            });
+            
+            // Buscar específicamente los elementos del menú hamburguesa
+            const hamburgerMenuContainer = document.querySelector('#comp-mdmuyz206, [id*="HamburgerMenuContainer"], [class*="HamburgerMenuContainer"]');
+            if (hamburgerMenuContainer) {
+                // Mostrar cualquier contenido oculto dentro del contenedor
+                const hiddenElements = hamburgerMenuContainer.querySelectorAll('[style*="display: none"], [style*="visibility: hidden"], [aria-hidden="true"]');
+                hiddenElements.forEach(element => {
+                    element.style.display = 'block';
+                    element.style.visibility = 'visible';
+                    element.style.opacity = '1';
+                    element.removeAttribute('aria-hidden');
+                    console.log('✅ Elemento del menú mostrado:', element.tagName, element.className);
+                });
+            }
+            
             console.log('✅ Menú abierto');
         }
         
