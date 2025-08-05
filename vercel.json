@@ -9,6 +9,10 @@
   ],
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/umdesignermx.wixstudio.com/facultadbiologiauaq.html"
+    },
+    {
       "source": "/facultadbiologiauaq.html",
       "destination": "/umdesignermx.wixstudio.com/facultadbiologiauaq.html"
     },
