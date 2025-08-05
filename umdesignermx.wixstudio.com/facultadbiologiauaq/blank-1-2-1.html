@@ -974,6 +974,100 @@
 
 
 
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para inicializar el menú hamburguesa
+    function initHamburgerMenu() {
+        // Buscar el botón hamburguesa
+        const hamburgerButton = document.querySelector('[aria-label="Menu"], .wixui-hamburger-open-button, [data-semantic-classname="hamburger-open-button"]');
+        
+        // Buscar el overlay del menú
+        const menuOverlay = document.querySelector('[data-hook="hamburger-overlay-root"], .HamburgerOverlay547129737__root');
+        
+        // Buscar el botón de cerrar
+        const closeButton = document.querySelector('[aria-label="Close Site Navigation"], .wixui-hamburger-close-button');
+        
+        if (hamburgerButton && menuOverlay) {
+            console.log('Configurando menú hamburguesa...');
+            
+            // Función para abrir el menú
+            function openMenu() {
+                menuOverlay.setAttribute('data-visible', 'true');
+                menuOverlay.style.visibility = 'visible';
+                menuOverlay.style.display = 'flex';
+                menuOverlay.classList.add('HamburgerOverlay547129737--isMenuOpen');
+                
+                hamburgerButton.setAttribute('aria-expanded', 'true');
+                
+                // Bloquear scroll del body
+                document.body.style.overflow = 'hidden';
+                
+                console.log('Menú abierto');
+            }
+            
+            // Función para cerrar el menú
+            function closeMenu() {
+                menuOverlay.setAttribute('data-visible', 'false');
+                menuOverlay.style.visibility = 'hidden';
+                menuOverlay.style.display = 'none';
+                menuOverlay.classList.remove('HamburgerOverlay547129737--isMenuOpen');
+                
+                hamburgerButton.setAttribute('aria-expanded', 'false');
+                
+                // Restaurar scroll del body
+                document.body.style.overflow = '';
+                
+                console.log('Menú cerrado');
+            }
+            
+            // Event listener para abrir el menú
+            hamburgerButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openMenu();
+            });
+            
+            // Event listener para cerrar con el botón X
+            if (closeButton) {
+                closeButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeMenu();
+                });
+            }
+            
+            // Event listener para cerrar clickeando el overlay
+            menuOverlay.addEventListener('click', function(e) {
+                if (e.target === menuOverlay || e.target.classList.contains('HamburgerOverlay547129737__overlay')) {
+                    closeMenu();
+                }
+            });
+            
+            // Event listener para cerrar con Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && menuOverlay.getAttribute('data-visible') === 'true') {
+                    closeMenu();
+                }
+            });
+            
+            console.log('Menú hamburguesa configurado correctamente');
+        } else {
+            console.log('No se encontraron los elementos del menú hamburguesa');
+        }
+    }
+    
+    // Inicializar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHamburgerMenu);
+    } else {
+        initHamburgerMenu();
+    }
+    
+    // También intentar inicializar después de un delay para asegurar que todos los elementos estén cargados
+    setTimeout(initHamburgerMenu, 1000);
+});
+</script>
 </body>
 
 <!-- Mirrored from umdesignermx.wixstudio.com/facultadbiologiauaq/blank-1-2-1 by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 Aug 2025 19:08:56 GMT -->

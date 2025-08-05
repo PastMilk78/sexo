@@ -1,49 +1,15 @@
+#!/usr/bin/env node
 
-  <!DOCTYPE html>
-<!--
-    
-  
-      
--->
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex">
-    <title>404 Error: Page Not Found | Wix Studio</title>
+const fs = require('fs');
+const path = require('path');
 
-    <link rel="icon" sizes="192x192" href="https://static.wixstatic.com/shapes/0d6674_28f5671807e54a04ad12ab65fc34c42e.svg" type="image/svg+xml"/>
-    <link rel="shortcut icon" href="https://static.wixstatic.com/shapes/0d6674_28f5671807e54a04ad12ab65fc34c42e.svg" type="image/svg+xml"/>
-    <link rel="apple-touch-icon" href="https://static.wixstatic.com/shapes/0d6674_28f5671807e54a04ad12ab65fc34c42e.svg" type="image/svg+xml"/>
-
-    <script async src="https://static.parastorage.com/polyfill/v2/polyfill.min.js?features=default,es6,es7,es2017&flags=gated&unknown=polyfill&rum=0"></script>
-    <script src="https://static.parastorage.com/unpkg-semver/fedops-logger@5/fedops-logger.bundle.min.js"></script>
-    <script>
-        fedopsLogger.reportAppLoadStarted("studio-error-pages-statics");
-    </script>
-
-    <script crossorigin src="https://static.parastorage.com/unpkg/react@18.2.0/umd/react.production.min.js"></script>
-    <script crossorigin src="https://static.parastorage.com/unpkg/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-
-    <link rel="stylesheet" href="https://static.parastorage.com/services/studio-error-pages-statics/1.74.0/app.min.css">
-</head>
-<body>
-<div id="root"></div>
-<script>
-    window.__LOCALE__ = 'en';
-    window.__ERROR_DATA__ = {
-        staticsUrl: 'https://static.parastorage.com/services/studio-error-pages-statics/1.74.0/',
-        baseDomain: 'wix.com',
-        errorCode: '404',
-        exceptionName: '',
-        serverErrorCode: '-100',
-        data: {},
-        brand: 'studio',
-        requestId: '1754248033.014122483227481604691'
-    };
-</script>
-<script src="https://static.parastorage.com/services/studio-error-pages-statics/1.74.0/app.bundle.min.js"></script>
-
+function addHamburgerMenuScript(filePath) {
+    try {
+        let content = fs.readFileSync(filePath, 'utf8');
+        let changesMade = false;
+        
+        // Script para hacer funcionar el menú hamburguesa
+        const hamburgerScript = `
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Función para inicializar el menú hamburguesa
@@ -136,6 +102,58 @@ document.addEventListener('DOMContentLoaded', function() {
     // También intentar inicializar después de un delay para asegurar que todos los elementos estén cargados
     setTimeout(initHamburgerMenu, 1000);
 });
-</script>
-</body>
-</html>
+</script>`;
+        
+        // Insertar el script antes del cierre de </body>
+        if (content.includes('</body>')) {
+            const beforeBody = content;
+            content = content.replace('</body>', hamburgerScript + '\n</body>');
+            
+            if (beforeBody !== content) {
+                changesMade = true;
+            }
+        }
+        
+        // Guardar solo si se hicieron cambios
+        if (changesMade) {
+            fs.writeFileSync(filePath, content, 'utf8');
+            console.log(`✅ Script de menú hamburguesa agregado: ${filePath}`);
+            return true;
+        } else {
+            console.log(`⏭️  Sin cambios en script hamburguesa: ${filePath}`);
+            return false;
+        }
+        
+    } catch (error) {
+        console.error(`❌ Error procesando ${filePath}:`, error.message);
+        return false;
+    }
+}
+
+function processDirectory() {
+    const facultadDir = 'umdesignermx.wixstudio.com/facultadbiologiauaq';
+    
+    if (!fs.existsSync(facultadDir)) {
+        console.error(`❌ Directorio no encontrado: ${facultadDir}`);
+        return;
+    }
+    
+    const files = fs.readdirSync(facultadDir);
+    const htmlFiles = files.filter(file => file.endsWith('.html') && !file.includes('robots') && !file.includes('sitemap') && !file.includes('feed'));
+    
+    console.log(`🔍 Agregando funcionalidad de menú hamburguesa a ${htmlFiles.length} archivos HTML`);
+    
+    let totalFixed = 0;
+    
+    htmlFiles.forEach(file => {
+        const filePath = path.join(facultadDir, file);
+        if (addHamburgerMenuScript(filePath)) {
+            totalFixed++;
+        }
+    });
+    
+    console.log(`\n🎉 Proceso completado: ${totalFixed} archivos con funcionalidad de menú hamburguesa agregada.`);
+}
+
+// Ejecutar el proceso
+processDirectory();
